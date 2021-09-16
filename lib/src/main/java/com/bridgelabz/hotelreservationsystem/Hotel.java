@@ -1,5 +1,6 @@
 package com.bridgelabz.hotelreservationsystem;
 
+import java.time.LocalDate;
 public class Hotel {
 
 	private String hotelName;
@@ -30,6 +31,19 @@ public class Hotel {
 	}
 	public void setRateForWeekEnd(double rateForWeekEnd) {
 		this.rateForWeekEnd = rateForWeekEnd;
+	}
+	public double getRateForDates(LocalDate startDate, LocalDate endDate) {
+		double totalRate = 0;
+		
+		for (LocalDate date = startDate; date.isBefore(endDate.plusDays(1)); date = date.plusDays(1)) {
+		    if(date.getDayOfWeek().getValue() <= 5) {
+		    	totalRate+=this.rateForWeekDay;
+		    }
+		    else {
+		    	totalRate+=this.rateForWeekEnd;
+		    }
+		}
+		return totalRate;
 	}
 	@Override
 	public String toString() {
