@@ -94,4 +94,11 @@ public double getCheapestHotel(LocalDate startDate, LocalDate endDate) {
 		return hotel.get();
 	}
 
+	public Hotel getBestHotelBasedOnRatings(LocalDate startDate, LocalDate endDate) {
+		Optional<Hotel> hotel =  hotelList.stream()
+				.max(Comparator.comparing(Hotel::getRatings));
+		
+		return hotel.get();
+	}
+
 }
