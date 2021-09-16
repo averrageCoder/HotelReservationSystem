@@ -5,7 +5,14 @@ public class Hotel {
 	private String hotelName;
 	private double rateForWeekDay;
 	private double rateForWeekEnd;
+	private int ratings;
 	
+	public int getRatings() {
+		return ratings;
+	}
+	public void setRatings(int ratings) {
+		this.ratings = ratings;
+	}
 	public String getHotelName() {
 		return hotelName;
 	}
@@ -27,6 +34,6 @@ public class Hotel {
 	@Override
 	public String toString() {
 		return "Hotel [hotelName=" + hotelName + ", rateForWeekDay=" + rateForWeekDay + ", rateForWeekEnd="
-				+ rateForWeekEnd + "]";
+				+ rateForWeekEnd + ", ratings=" + ratings + "]";
 	}
 }
