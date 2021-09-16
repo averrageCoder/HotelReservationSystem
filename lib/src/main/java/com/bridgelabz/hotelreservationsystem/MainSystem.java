@@ -23,16 +23,17 @@ public class MainSystem {
 		
 		long noOfDaysBetween = ChronoUnit.DAYS.between(startDate, endDate);
 		//System.out.println("No. of days between: "+noOfDaysBetween);
-		Optional<Hotel> hotel = hotelList.stream().min(Comparator.comparing(Hotel::getRateForRegularCustomer));
+		Optional<Hotel> hotel = hotelList.stream().min(Comparator.comparing(Hotel::getRateForWeekDay));
 		
 		return hotel.get();
 		
 	}
 	
-	public void addHotel(String hotelName, double rateForRegularCustomer) {
+	public void addHotel(String hotelName, double rateForWeekDay, double rateForWeekEnd) {
 		Hotel hotel = new Hotel();
 		hotel.setHotelName(hotelName);
-		hotel.setRateForRegularCustomer(rateForRegularCustomer);
+		hotel.setRateForWeekDay(rateForWeekDay);
+		hotel.setRateForWeekEnd(rateForWeekEnd);
 		this.hotelList.add(hotel);	
 	}
 	
