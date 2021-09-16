@@ -13,44 +13,52 @@ public class HotelTest {
 	@Test
 	public void givenHotelName_shouldReturnProperHotelName(){
 		MainSystem hotelReservationSystem = new MainSystem();
-		hotelReservationSystem.addHotel("bridge", 100, 150);
+		hotelReservationSystem.addHotel("bridge", 100, 150, 3);
 		ArrayList<Hotel> hotelList = hotelReservationSystem.getHotelList();
 		assertEquals("bridge", hotelList.get(0).getHotelName());
 	}
 	
 	@Test
-	public void givenHotelRate_shouldReturnProperHotelWeedDayRate(){
+	public void givenHotelRate_shouldReturnProperHotelWeekDayRate(){
 		MainSystem hotelReservationSystem = new MainSystem();
-		hotelReservationSystem.addHotel("bridge", 100, 150);
+		hotelReservationSystem.addHotel("bridge", 100, 150, 3);
 		ArrayList<Hotel> hotelList = hotelReservationSystem.getHotelList();
 		assertEquals(100, hotelList.get(0).getRateForWeekDay());
 	}
 	
 	@Test
-	public void givenHotelRate_shouldReturnProperHotelWeedEndRate(){
+	public void givenHotelRate_shouldReturnProperHotelWeekdEndRate(){
 		MainSystem hotelReservationSystem = new MainSystem();
-		hotelReservationSystem.addHotel("bridge", 100, 150);
+		hotelReservationSystem.addHotel("bridge", 100, 150, 3);
 		ArrayList<Hotel> hotelList = hotelReservationSystem.getHotelList();
 		assertEquals(150, hotelList.get(0).getRateForWeekEnd());
 	}
 	
 	@Test
+	public void givenHotel_shouldReturnProperHotelRating(){
+		MainSystem hotelReservationSystem = new MainSystem();
+		hotelReservationSystem.addHotel("bridge", 100, 150, 3);
+		ArrayList<Hotel> hotelList = hotelReservationSystem.getHotelList();
+		assertEquals(3, hotelList.get(0).getRatings());
+	}
+	
+	@Test
 	public void givenHotelList_shouldReturnProperSize() {
 		MainSystem hotelReservationSystem = new MainSystem();
-		hotelReservationSystem.addHotel("bridge", 100, 150);
+		hotelReservationSystem.addHotel("bridge", 100, 150, 3);
 		ArrayList<Hotel> hotelList = hotelReservationSystem.getHotelList();
 		assertEquals(1, hotelList.size());
 	}
 	
 	@Test
-	public void givenHotelList_shouldReturnCheapestHotel(){
+	public void givenHotelList_shouldReturnCheapestHotelBasedOnWeekdayAndWeekend(){
 		MainSystem hotelReservationSystem = new MainSystem();
-		hotelReservationSystem.addHotel("bridgewood", 150, 50);
-		hotelReservationSystem.addHotel("lakeview", 110, 90);
-		hotelReservationSystem.addHotel("ridgewood", 220, 150);
+		hotelReservationSystem.addHotel("bridgewood", 150, 50,3);
+		hotelReservationSystem.addHotel("lakeview", 110, 90,4);
+		hotelReservationSystem.addHotel("ridgewood", 220, 150,5);
 		LocalDate startDate = LocalDate.of(2020, Month.SEPTEMBER, 11);    
 		LocalDate endDate = LocalDate.of(2020, Month.SEPTEMBER, 12);    
-		double totalRate = hotelReservationSystem.getCheapestHotel(startDate, endDate);
+		double totalRate = hotelReservationSystem.getCheapestHotelBasedOnWeekdayAndWeekEnd(startDate, endDate);
 		assertEquals(160, totalRate);
 	}
 	
