@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class MainSystem {
 	
-	private static ArrayList<Hotel> hotelList = new ArrayList<>();
+	private ArrayList<Hotel> hotelList = new ArrayList<>();
 
 	public static void main(String[] args) {
 		
@@ -13,17 +13,17 @@ public class MainSystem {
 		
 	}
 	
-	public static void addHotel(String hotelName, double rateForRegularCustomer) {
+	public void addHotel(String hotelName, double rateForRegularCustomer) {
 		
 		Hotel hotel = new Hotel();
 		hotel.setHotelName(hotelName);
 		hotel.setRateForRegularCustomer(rateForRegularCustomer);
-		hotelList.add(hotel);
+		this.hotelList.add(hotel);
 		
 	}
 	
-	public static ArrayList<Hotel> getHotelList() {
-		return hotelList;
+	public ArrayList<Hotel> getHotelList() {
+		return this.hotelList;
 	}
 
 }
