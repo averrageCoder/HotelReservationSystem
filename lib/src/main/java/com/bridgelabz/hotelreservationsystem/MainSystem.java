@@ -1,6 +1,6 @@
 package com.bridgelabz.hotelreservationsystem;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -19,14 +19,13 @@ public class MainSystem {
 		
 	}
 	
-	public Hotel getCheapestHotel(LocalDateTime startDate, LocalDateTime endDate) {
+	public Hotel getCheapestHotel(LocalDate startDate, LocalDate endDate) {
 		
 		long noOfDaysBetween = ChronoUnit.DAYS.between(startDate, endDate);
+		//System.out.println("No. of days between: "+noOfDaysBetween);
+		Optional<Hotel> hotel = hotelList.stream().min(Comparator.comparing(Hotel::getRateForRegularCustomer));
 		
-		ArrayList<Hotel> hotel = hotelList.stream().sorted(Comparator.comparing(Hotel::getRateForRegularCustomer))
-		.collect(Collectors.toCollection(ArrayList::new));
-		
-		return hotel.get(0);
+		return hotel.get();
 		
 	}
 	
