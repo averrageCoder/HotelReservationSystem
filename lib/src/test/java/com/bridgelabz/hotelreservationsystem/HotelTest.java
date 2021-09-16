@@ -123,4 +123,21 @@ public class HotelTest {
 		}
 	}
 	
+	@Test
+	public void givenHotelList_shouldReturnCheapestHotelBasedOnRatingsForRegularCustomer(){
+		MainSystem hotelReservationSystem = new MainSystem();
+		hotelReservationSystem.addHotel("bridgewood", 150, 50, 110, 150, 3);
+		hotelReservationSystem.addHotel("lakeview", 110, 90,110, 150, 4);
+		hotelReservationSystem.addHotel("ridgewood", 220, 150,100, 40, 5);
+		String startDate = "11Sep2020";  
+		String endDate = "12Sep2020";
+		try {
+			Hotel hotel = hotelReservationSystem.getCheapestHotelBasedOnRatingsForRegularCustomer(startDate, endDate);
+			assertEquals("bridgewood", hotel.getHotelName());
+		}
+		catch (HotelException e) {
+			assertEquals(e.type, HotelException.ExceptionType.ENTERED_EMPTY);
+		}
+	}
+	
 }
