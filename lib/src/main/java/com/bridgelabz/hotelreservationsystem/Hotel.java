@@ -48,13 +48,24 @@ public class Hotel {
 	}
 	public double getRegularRateForDates(LocalDate startDate, LocalDate endDate) {
 		double totalRate = 0;
-		
 		for (LocalDate date = startDate; date.isBefore(endDate.plusDays(1)); date = date.plusDays(1)) {
 		    if(date.getDayOfWeek().getValue() <= 5) {
 		    	totalRate+=this.rateForWeekDayForRegularCustomer;
 		    }
 		    else {
 		    	totalRate+=this.rateForWeekEndForRegularCustomer;
+		    }
+		}
+		return totalRate;
+	}
+	public double getRewardRateForDates(LocalDate startDate, LocalDate endDate) {
+		double totalRate = 0;
+		for (LocalDate date = startDate; date.isBefore(endDate.plusDays(1)); date = date.plusDays(1)) {
+		    if(date.getDayOfWeek().getValue() <= 5) {
+		    	totalRate+=this.rateForWeekDayForRewardCustomer;
+		    }
+		    else {
+		    	totalRate+=this.rateForWeekEndForRewardCustomer;
 		    }
 		}
 		return totalRate;

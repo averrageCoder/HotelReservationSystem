@@ -1,6 +1,8 @@
 package com.bridgelabz.hotelreservationsystem;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -81,17 +83,15 @@ public double getCheapestHotel(LocalDate startDate, LocalDate endDate) {
 		long noOfDaysBetween = ChronoUnit.DAYS.between(startDate, endDate);
 		double totalRate = 0;
 		
-		Comparator<Hotel> cheapHotelForDates = (o1, o2) -> (int)o1.getRegularRateForDates(startDate, endDate) - (int)o2.getRegularRateForDates(startDate, endDate);
+		Comparator<Hotel> cheapHotelForDates = (o1, o2) -> (int)o1.getRewardRateForDates(startDate, endDate) - (int)o2.getRewardRateForDates(startDate, endDate);
 		
 		Optional<Hotel> cheapestHotel = hotelList.stream()
 				.min(cheapHotelForDates);
 		
-		double cheapestRateForDates = cheapestHotel.get().getRegularRateForDates(startDate, endDate);
-		
-		System.out.println("Cheapest Hotel list: "+cheapestHotel);
+		double cheapestRateForDates = cheapestHotel.get().getRewardRateForDates(startDate, endDate);
 		
 		Optional<Hotel> hotel =  cheapestHotel.stream()
-				.filter(o -> o.getRegularRateForDates(startDate, endDate)==cheapestRateForDates)
+				.filter(o -> o.getRewardRateForDates(startDate, endDate)==cheapestRateForDates)
 				.max(Comparator.comparing(Hotel::getRatings));
 		return hotel.get();
 	}
@@ -100,6 +100,35 @@ public double getCheapestHotel(LocalDate startDate, LocalDate endDate) {
 		Optional<Hotel> hotel =  hotelList.stream()
 				.max(Comparator.comparing(Hotel::getRatings));
 		
+		return hotel.get();
+	}
+
+	public Hotel getCheapestHotelBasedOnRatingsForRewardCustomer(String startDateStr, String endDateStr) {
+		
+		LocalDate startDate;
+		LocalDate endDate;
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("ddMMMuuuu");
+		try {
+			startDate = LocalDate.parse(startDateStr,formatter);
+			endDate = LocalDate.parse(endDateStr,formatter);
+		}
+		catch (DateTimeParseException e) {
+			throw new HotelException(HotelException.ExceptionType.INVALID_DATE, "Please enter a valid date");
+		}
+		
+		
+		double totalRate = 0;
+		Comparator<Hotel> cheapHotelForDates = (o1, o2) -> (int)o1.getRewardRateForDates(startDate, endDate) - (int)o2.getRewardRateForDates(startDate, endDate);
+		Optional<Hotel> cheapestHotel = hotelList.stream()
+				.min(cheapHotelForDates);
+		
+		double cheapestRateForDates = cheapestHotel.get().getRewardRateForDates(startDate, endDate);
+		
+		System.out.println("Cheapest Hotel list: "+cheapestHotel);
+		
+		Optional<Hotel> hotel =  cheapestHotel.stream()
+				.filter(o -> o.getRewardRateForDates(startDate, endDate)==cheapestRateForDates)
+				.max(Comparator.comparing(Hotel::getRatings));
 		return hotel.get();
 	}
 
