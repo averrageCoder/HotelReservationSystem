@@ -62,4 +62,17 @@ public class HotelTest {
 		assertEquals(160, totalRate);
 	}
 	
+	@Test
+	public void givenHotelList_shouldReturnCheapestHotelBasedOnRatings(){
+		MainSystem hotelReservationSystem = new MainSystem();
+		hotelReservationSystem.addHotel("bridgewood", 150, 50,4);
+		hotelReservationSystem.addHotel("lakeview", 110, 90,3);
+		hotelReservationSystem.addHotel("ridgewood", 220, 150,5);
+		LocalDate startDate = LocalDate.of(2020, Month.SEPTEMBER, 11);    
+		LocalDate endDate = LocalDate.of(2020, Month.SEPTEMBER, 12);    
+		Hotel hotel = hotelReservationSystem.getCheapestHotelBasedOnRatings(startDate, endDate);
+		assertEquals("bridgewood", hotel.getHotelName());
+		assertEquals(200, hotel.getRateForDates(startDate, endDate));
+	}
+	
 }
