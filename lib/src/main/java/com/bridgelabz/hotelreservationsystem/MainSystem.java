@@ -25,17 +25,17 @@ public class MainSystem {
 		long noOfDaysBetween = ChronoUnit.DAYS.between(startDate, endDate);
 		double totalRate = 0;
 		
-		Optional<Hotel> cheapestWeekdayhotel = hotelList.stream().min(Comparator.comparing(Hotel::getRateForWeekDay));
-		Optional<Hotel> cheapestWeekendhotel = hotelList.stream().min(Comparator.comparing(Hotel::getRateForWeekEnd));
+		Optional<Hotel> cheapestWeekdayhotel = hotelList.stream().min(Comparator.comparing(Hotel::getRateForWeekDayForRegularCustomer));
+		Optional<Hotel> cheapestWeekendhotel = hotelList.stream().min(Comparator.comparing(Hotel::getRateForWeekEndForRegularCustomer));
 		
 		for (LocalDate date = startDate; date.isBefore(endDate.plusDays(1)); date = date.plusDays(1)) {
 		    if(date.getDayOfWeek().getValue() <= 5) {
 		    	System.out.println("On "+date+" "+date.getDayOfWeek()+" stay at "+cheapestWeekdayhotel.get().getHotelName());
-		    	totalRate+=cheapestWeekdayhotel.get().getRateForWeekDay();
+		    	totalRate+=cheapestWeekdayhotel.get().getRateForWeekDayForRegularCustomer();
 		    }
 		    else {
 		    	System.out.println("On "+date+" "+date.getDayOfWeek()+" stay at "+cheapestWeekendhotel.get().getHotelName());
-		    	totalRate+=cheapestWeekendhotel.get().getRateForWeekEnd();
+		    	totalRate+=cheapestWeekendhotel.get().getRateForWeekEndForRegularCustomer();
 		    }
 		}
 		return totalRate;
@@ -46,27 +46,29 @@ public double getCheapestHotel(LocalDate startDate, LocalDate endDate) {
 		long noOfDaysBetween = ChronoUnit.DAYS.between(startDate, endDate);
 		double totalRate = 0;
 		
-		Optional<Hotel> cheapestWeekdayhotel = hotelList.stream().min(Comparator.comparing(Hotel::getRateForWeekDay));
-		Optional<Hotel> cheapestWeekendhotel = hotelList.stream().min(Comparator.comparing(Hotel::getRateForWeekEnd));
+		Optional<Hotel> cheapestWeekdayhotel = hotelList.stream().min(Comparator.comparing(Hotel::getRateForWeekDayForRegularCustomer));
+		Optional<Hotel> cheapestWeekendhotel = hotelList.stream().min(Comparator.comparing(Hotel::getRateForWeekEndForRegularCustomer));
 		
 		for (LocalDate date = startDate; date.isBefore(endDate.plusDays(1)); date = date.plusDays(1)) {
 		    if(date.getDayOfWeek().getValue() <= 5) {
 		    	System.out.println("On "+date+" "+date.getDayOfWeek()+" stay at "+cheapestWeekdayhotel.get().getHotelName());
-		    	totalRate+=cheapestWeekdayhotel.get().getRateForWeekDay();
+		    	totalRate+=cheapestWeekdayhotel.get().getRateForWeekDayForRegularCustomer();
 		    }
 		    else {
 		    	System.out.println("On "+date+" "+date.getDayOfWeek()+" stay at "+cheapestWeekendhotel.get().getHotelName());
-		    	totalRate+=cheapestWeekendhotel.get().getRateForWeekEnd();
+		    	totalRate+=cheapestWeekendhotel.get().getRateForWeekEndForRegularCustomer();
 		    }
 		}
 		return totalRate;
 	}
 	
-	public void addHotel(String hotelName, double rateForWeekDay, double rateForWeekEnd, int ratings) {
+	public void addHotel(String hotelName, double rateForWeekDay, double rateForWeekEnd, double rewardRateForWeekDay, double rewardRateForWeekEnd, int ratings) {
 		Hotel hotel = new Hotel();
 		hotel.setHotelName(hotelName);
-		hotel.setRateForWeekDay(rateForWeekDay);
-		hotel.setRateForWeekEnd(rateForWeekEnd);
+		hotel.setRateForWeekDayForRegularCustomer(rateForWeekDay);
+		hotel.setRateForWeekEndForRegularCustomer(rateForWeekEnd);
+		hotel.setRateForWeekDayForRewardCustomer(rewardRateForWeekDay);
+		hotel.setRateForWeekEndForRewardCustomer(rewardRateForWeekEnd);
 		hotel.setRatings(ratings);
 		this.hotelList.add(hotel);	
 	}
@@ -79,17 +81,17 @@ public double getCheapestHotel(LocalDate startDate, LocalDate endDate) {
 		long noOfDaysBetween = ChronoUnit.DAYS.between(startDate, endDate);
 		double totalRate = 0;
 		
-		Comparator<Hotel> cheapHotelForDates = (o1, o2) -> (int)o1.getRateForDates(startDate, endDate) - (int)o2.getRateForDates(startDate, endDate);
+		Comparator<Hotel> cheapHotelForDates = (o1, o2) -> (int)o1.getRegularRateForDates(startDate, endDate) - (int)o2.getRegularRateForDates(startDate, endDate);
 		
 		Optional<Hotel> cheapestHotel = hotelList.stream()
 				.min(cheapHotelForDates);
 		
-		double cheapestRateForDates = cheapestHotel.get().getRateForDates(startDate, endDate);
+		double cheapestRateForDates = cheapestHotel.get().getRegularRateForDates(startDate, endDate);
 		
 		System.out.println("Cheapest Hotel list: "+cheapestHotel);
 		
 		Optional<Hotel> hotel =  cheapestHotel.stream()
-				.filter(o -> o.getRateForDates(startDate, endDate)==cheapestRateForDates)
+				.filter(o -> o.getRegularRateForDates(startDate, endDate)==cheapestRateForDates)
 				.max(Comparator.comparing(Hotel::getRatings));
 		return hotel.get();
 	}
