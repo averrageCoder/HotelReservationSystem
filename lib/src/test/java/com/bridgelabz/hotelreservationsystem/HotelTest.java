@@ -2,7 +2,8 @@ package com.bridgelabz.hotelreservationsystem;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.ArrayList;
 
 import org.junit.jupiter.api.Test;
@@ -18,7 +19,7 @@ public class HotelTest {
 	}
 	
 	@Test
-	public void givenHotelRate_shouldReturnProperHotelRate() throws Exception {
+	public void givenHotelRate_shouldReturnProperHotelRate(){
 		MainSystem hotelReservationSystem = new MainSystem();
 		hotelReservationSystem.addHotel("bridge", 100);
 		ArrayList<Hotel> hotelList = hotelReservationSystem.getHotelList();
@@ -26,7 +27,7 @@ public class HotelTest {
 	}
 	
 	@Test
-	public void givenHotelList_shouldReturnProperSize() throws Exception {
+	public void givenHotelList_shouldReturnProperSize() {
 		MainSystem hotelReservationSystem = new MainSystem();
 		hotelReservationSystem.addHotel("bridge", 100);
 		ArrayList<Hotel> hotelList = hotelReservationSystem.getHotelList();
@@ -34,14 +35,14 @@ public class HotelTest {
 	}
 	
 	@Test
-	public void givenHotelList_shouldReturnCheapestHotel() throws Exception {
+	public void givenHotelList_shouldReturnCheapestHotel(){
 		MainSystem hotelReservationSystem = new MainSystem();
 		hotelReservationSystem.addHotel("bridge", 100);
 		hotelReservationSystem.addHotel("lakeview", 10);
-		LocalDateTime startDate = LocalDateTime.of(2021, 9, 10, 0, 0);    
-		LocalDateTime endDate = LocalDateTime.of(2021, 9, 11, 0, 0);    
+		LocalDate startDate = LocalDate.of(2021, Month.SEPTEMBER, 10);    
+		LocalDate endDate = LocalDate.of(2021, Month.SEPTEMBER, 11);    
 		Hotel hotel = hotelReservationSystem.getCheapestHotel(startDate, endDate);
-		assertEquals("lakeview", hotel.getHotelName());
+		assertEquals(10, hotel.getRateForRegularCustomer());
 	}
 	
 }
