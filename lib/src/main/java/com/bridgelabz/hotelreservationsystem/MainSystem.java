@@ -3,6 +3,7 @@ package com.bridgelabz.hotelreservationsystem;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.Optional;
 import java.util.OptionalDouble;
@@ -72,6 +73,25 @@ public double getCheapestHotel(LocalDate startDate, LocalDate endDate) {
 	
 	public ArrayList<Hotel> getHotelList() {
 		return this.hotelList;
+	}
+
+	public Hotel getCheapestHotelBasedOnRatings(LocalDate startDate, LocalDate endDate) {
+		long noOfDaysBetween = ChronoUnit.DAYS.between(startDate, endDate);
+		double totalRate = 0;
+		
+		Comparator<Hotel> cheapHotelForDates = (o1, o2) -> (int)o1.getRateForDates(startDate, endDate) - (int)o2.getRateForDates(startDate, endDate);
+		
+		Optional<Hotel> cheapestHotel = hotelList.stream()
+				.min(cheapHotelForDates);
+		
+		double cheapestRateForDates = cheapestHotel.get().getRateForDates(startDate, endDate);
+		
+		System.out.println("Cheapest Hotel list: "+cheapestHotel);
+		
+		Optional<Hotel> hotel =  cheapestHotel.stream()
+				.filter(o -> o.getRateForDates(startDate, endDate)==cheapestRateForDates)
+				.max(Comparator.comparing(Hotel::getRatings));
+		return hotel.get();
 	}
 
 }
