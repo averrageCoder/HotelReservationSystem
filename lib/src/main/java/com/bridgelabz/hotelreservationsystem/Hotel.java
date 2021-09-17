@@ -1,73 +1,85 @@
 package com.bridgelabz.hotelreservationsystem;
 
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
+
+
+
 public class Hotel {
+	
+	enum CUSTOMER_TYPE {
+		REGULAR, REWARD
+	}
+	
+	enum TYPE_OF_DATE {
+		WEEKDAY, WEEKEND
+	}
 
 	private String hotelName;
-	private double rateForWeekDayForRegularCustomer;
-	private double rateForWeekEndForRegularCustomer;
-	private double rateForWeekDayForRewardCustomer;
-	private double rateForWeekEndForRewardCustomer;
+	Map<CUSTOMER_TYPE, Map<TYPE_OF_DATE, Integer>> rates = new HashMap<CUSTOMER_TYPE, Map<TYPE_OF_DATE, Integer>>();
 	private int ratings;
+	
+	public String getHotelName() {
+		return hotelName;
+	}
+	
+	public void setHotelName(String hotelName) {
+		this.hotelName = hotelName;
+	}
+	
+	public Map<CUSTOMER_TYPE, Map<TYPE_OF_DATE, Integer>> getRates() {
+		return rates;
+	}
+	
+	public void setRates(CUSTOMER_TYPE customerType, TYPE_OF_DATE typeOfDate, Integer rate) {
+		if(this.rates.containsKey(customerType)) {
+			this.rates.get(customerType).put(typeOfDate, rate);
+		}
+		else {
+			Map<TYPE_OF_DATE, Integer> rateForTypeOfDate = new HashMap<TYPE_OF_DATE, Integer>(); 
+			rateForTypeOfDate.put(typeOfDate, rate);
+			this.rates.put(customerType, rateForTypeOfDate);
+		}
+	}
 	
 	public int getRatings() {
 		return ratings;
 	}
+	
 	public void setRatings(int ratings) {
 		this.ratings = ratings;
 	}
-	public String getHotelName() {
-		return hotelName;
-	}
-	public void setHotelName(String hotelName) {
-		this.hotelName = hotelName;
-	}
-	public double getRateForWeekDayForRegularCustomer() {
-		return rateForWeekDayForRegularCustomer;
-	}
-	public void setRateForWeekDayForRegularCustomer(double rateForWeekDay) {
-		this.rateForWeekDayForRegularCustomer = rateForWeekDay;
-	}
-	public double getRateForWeekEndForRegularCustomer() {
-		return rateForWeekEndForRegularCustomer;
-	}
-	public void setRateForWeekEndForRegularCustomer(double rateForWeekEnd) {
-		this.rateForWeekEndForRegularCustomer = rateForWeekEnd;
-	}
-	public double getRateForWeekDayForRewardCustomer() {
-		return rateForWeekDayForRewardCustomer;
-	}
-	public void setRateForWeekDayForRewardCustomer(double rateForWeekDayForRewardCustomer) {
-		this.rateForWeekDayForRewardCustomer = rateForWeekDayForRewardCustomer;
-	}
-	public double getRateForWeekEndForRewardCustomer() {
-		return rateForWeekEndForRewardCustomer;
-	}
-	public void setRateForWeekEndForRewardCustomer(double rateForWeekEndForRewardCustomer) {
-		this.rateForWeekEndForRewardCustomer = rateForWeekEndForRewardCustomer;
-	}
-	public double getRegularRateForDates(LocalDate startDate, LocalDate endDate) {
-		double totalRate = 0;
-		for (LocalDate date = startDate; date.isBefore(endDate.plusDays(1)); date = date.plusDays(1)) {
-		    if(date.getDayOfWeek().getValue() <= 5) {
-		    	totalRate+=this.rateForWeekDayForRegularCustomer;
-		    }
-		    else {
-		    	totalRate+=this.rateForWeekEndForRegularCustomer;
-		    }
+	
+	public Integer getRatesForRegularCustomerForWeekday() {
+		if (this.rates.containsKey(CUSTOMER_TYPE.REGULAR)) {
+			if(this.rates.get(CUSTOMER_TYPE.REGULAR).containsKey(TYPE_OF_DATE.WEEKDAY))
+				return this.rates.get(CUSTOMER_TYPE.REGULAR).get(TYPE_OF_DATE.WEEKDAY);
 		}
-		return totalRate;
+		return null;
 	}
-	public double getRewardRateForDates(LocalDate startDate, LocalDate endDate) {
-		double totalRate = 0;
-		for (LocalDate date = startDate; date.isBefore(endDate.plusDays(1)); date = date.plusDays(1)) {
-		    if(date.getDayOfWeek().getValue() <= 5) {
-		    	totalRate+=this.rateForWeekDayForRewardCustomer;
-		    }
-		    else {
-		    	totalRate+=this.rateForWeekEndForRewardCustomer;
-		    }
+	
+	public Integer getRatesForRegularCustomerForWeekend() {
+		if (this.rates.containsKey(CUSTOMER_TYPE.REGULAR)) {
+			if(this.rates.get(CUSTOMER_TYPE.REGULAR).containsKey(TYPE_OF_DATE.WEEKEND))
+				return this.rates.get(CUSTOMER_TYPE.REGULAR).get(TYPE_OF_DATE.WEEKEND);
 		}
-		return totalRate;
+		return null;
+	}
+	
+	public Integer getRatesForRewardCustomerForWeekday() {
+		if (this.rates.containsKey(CUSTOMER_TYPE.REWARD)) {
+			if(this.rates.get(CUSTOMER_TYPE.REWARD).containsKey(TYPE_OF_DATE.WEEKDAY))
+				return this.rates.get(CUSTOMER_TYPE.REWARD).get(TYPE_OF_DATE.WEEKDAY);
+		}
+		return null;
+	}
+	
+	public Integer getRatesForRewardCustomerForWeekend() {
+		if (this.rates.containsKey(CUSTOMER_TYPE.REWARD)) {
+			if(this.rates.get(CUSTOMER_TYPE.REWARD).containsKey(TYPE_OF_DATE.WEEKEND))
+				return this.rates.get(CUSTOMER_TYPE.REWARD).get(TYPE_OF_DATE.WEEKEND);
+		}
+		return null;
 	}
 }
